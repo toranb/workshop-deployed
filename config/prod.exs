@@ -10,8 +10,10 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :game, GameWeb.Endpoint,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  server: true,
+  http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
+  url: [scheme: "https", host: "elixirmatch.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
 config :logger, level: :info
