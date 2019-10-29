@@ -27,6 +27,7 @@ defmodule Game.Engine do
       cards
       |> Enum.map(&flip_card(&1, flip_id))
       |> attempt_match(struct)
+      |> calculate_scores()
       |> declare_winner()
     end
   end
@@ -52,6 +53,12 @@ defmodule Game.Engine do
       false ->
         %__MODULE__{struct | cards: cards}
     end
+  end
+
+  def calculate_scores(%__MODULE__{cards: cards} = struct) do
+    paired = div(Enum.count(cards, fn card -> card.paired == true end), 2)
+
+    %__MODULE__{struct | score: paired}
   end
 
   def declare_winner(%__MODULE__{cards: cards} = struct) do
